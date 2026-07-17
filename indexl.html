@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>বেটিং অ্যাপ লিস্ট</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  body { background: #f4f6f9; padding: 10px; }
+  
+  /* হেডার */
+  .header { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; padding: 20px 15px; border-radius: 0 0 20px 20px; margin: -10px -10px 20px -10px; }
+  .logo { font-size: 26px; font-weight: 900; color: #f5c842; text-align: center; }
+  .sub-text { text-align: center; opacity: 0.8; font-size: 14px; margin: 5px 0 15px; }
+  .search-box { width: 100%; padding: 12px 20px; border-radius: 50px; border: none; font-size: 15px; outline: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+
+  /* ক্যাটাগরি বাটন (মোবাইলের জন্য স্ক্রোলযোগ্য) */
+  .cat-wrap { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; padding: 5px 0 20px; margin-bottom: 5px; -webkit-overflow-scrolling: touch; }
+  .cat-wrap::-webkit-scrollbar { height: 3px; }
+  .cat-wrap::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+  .cat-btn { padding: 8px 20px; border-radius: 50px; border: 2px solid #ddd; background: white; font-weight: 600; font-size: 14px; white-space: nowrap; cursor: pointer; transition: 0.2s; }
+  .cat-btn.active, .cat-btn:active { background: #16213e; color: white; border-color: #16213e; }
+
+  /* অ্যাপ কার্ড (মোবাইলের জন্য পারফেক্ট লিস্ট) */
+  .app-grid { display: flex; flex-direction: column; gap: 12px; }
+  .app-card { background: white; border-radius: 14px; padding: 12px 15px; box-shadow: 0 3px 15px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 12px; border-left: 5px solid #f5c842; transition: 0.2s; }
+  .app-card:active { transform: scale(0.98); }
+  .app-img { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: #e9ecef; }
+  .app-info { flex: 1; min-width: 0; } /* টেক্সট ওভারফ্লো ঠিক করতে */
+  .app-info h3 { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+  .app-info .bonus { color: #198754; font-weight: 600; font-size: 12px; background: #e6f5ed; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-top: 4px; word-break: break-word; }
+  .visit-btn { background: #0d6efd; color: white; border: none; padding: 6px 16px; border-radius: 30px; font-weight: 700; font-size: 13px; cursor: pointer; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+  .visit-btn:active { background: #0b5ed7; }
+
+  /* ফুটার তথ্য */
+  .footer-note { text-align: center; font-size: 12px; color: #999; margin-top: 30px; padding: 15px; border-top: 1px solid #ddd; }
+  .admin-hint { background: #fff3cd; padding: 12px; border-radius: 12px; font-size: 13px; color: #856404; margin: 20px 0; border: 1px solid #ffc107; }
+  .admin-hint code { background: #e9ecef; padding: 2px 8px; border-radius: 5px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<!-- ========== হেডার ========== -->
+<div class="header">
+  <div class="logo">🎰 BET<span style="color:white;">LIST</span></div>
+  <div class="sub-text">সেরা অ্যাপের সাইনআপ বোনাস এক জায়গায়</div>
+  <input type="text" id="searchInput" class="search-box" placeholder="🔍 অ্যাপ খুঁজুন... (যেমন: JYJILI)">
+</div>
+
+<!-- ========== ক্যাটাগরি ফিল্টার ========== -->
+<div class="cat-wrap" id="categoryFilter">
+  <button class="cat-btn active" data-cat="all">🔥 সব</button>
+  <!-- ক্যাটাগরি জাভাস্ক্রিপ্ট দিয়ে যোগ হবে -->
+</div>
+
+<!-- ========== অ্যাপের তালিকা ========== -->
+<div class="app-grid" id="appGrid"></div>
+
+<!-- ========== কীভাবে নতুন অ্যাপ যোগ করবেন (শুধু আপনাকে দেখানোর জন্য) ========== -->
+<div class="admin-hint">
+  ⚙️ <strong>নতুন অ্যাপ যোগ/ডিলিট করতে:</strong> এই পোস্টটি এডিট করে HTML ভিউতে গিয়ে <br>
+  <code>const apps = [...]</code> এই অংশটি খুঁজুন এবং নিচের ফরম্যাটে নতুন অবজেক্ট যোগ করুন। <br>
+  (পাবলিশ করার পর মোবাইলেই পারফেক্ট দেখাবে)
+</div>
+
+<div class="footer-note">© 2026 - সর্বশেষ আপডেট: আজ</div>
+
+<script>
+  // =========================================================
+  // ★★★ এখানে আপনার সব অ্যাপের ডেটা লিখুন (যোগ/ডিলিট করুন) ★★★
+  // =========================================================
+  const apps = [
+    { id: 1, name: "JYJILI", category: "BET", bonus: "সাইনআপ বোনাস ৫০০০ টাকা", link: "https://example.com/aff/jyjili", image: "https://via.placeholder.com/80/0d6efd/white?text=JY" },
+    { id: 2, name: "BN88", category: "WIN", bonus: "১০০% ডিপোজিট বোনাস", link: "https://example.com/aff/bn88", image: "https://via.placeholder.com/80/d63384/white?text=BN" },
+    { id: 3, name: "EG333", category: "FREE", bonus: "ফ্রি স্পিন ৫০টি", link: "https://example.com/aff/eg333", image: "https://via.placeholder.com/80/198754/white?text=EG" },
+    { id: 4, name: "CRIC99", category: "CRICKET", bonus: "ক্রিকেট বোনাস ২০০০ টাকা", link: "https://example.com/aff/cric99", image: "https://via.placeholder.com/80/ffc107/white?text=C9" }
+  ];
+
+  // ---------- ডায়নামিক ক্যাটাগরি বানানো ----------
+  const categories = [...new Set(apps.map(app => app.category))];
+  const catWrap = document.getElementById('categoryFilter');
+  // 'সব' বাটন ছাড়া বাকি গুলো যোগ করুন
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn';
+    btn.dataset.cat = cat;
+    btn.innerText = cat;
+    catWrap.appendChild(btn);
+  });
+
+  // ---------- অ্যাপ কার্ড রেন্ডার করার ফাংশন ----------
+  function renderApps(filterCategory = 'all', searchText = '') {
+    const grid = document.getElementById('appGrid');
+    grid.innerHTML = '';
+    
+    const filtered = apps.filter(app => {
+      const matchCat = filterCategory === 'all' || app.category === filterCategory;
+      const matchSearch = app.name.toLowerCase().includes(searchText.toLowerCase());
+      return matchCat && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<p style="text-align:center; padding:30px; color:#999;">❌ কোনো অ্যাপ খুঁজে পাওয়া যায়নি</p>';
+      return;
+    }
+
+    filtered.forEach(app => {
+      const card = document.createElement('div');
+      card.className = 'app-card';
+      card.dataset.category = app.category;
+      card.innerHTML = `
+        <img src="${app.image}" alt="${app.name}" class="app-img" loading="lazy">
+        <div class="app-info">
+          <h3>${app.name}</h3>
+          <span class="bonus">🎁 ${app.bonus}</span>
+        </div>
+        <a href="${app.link}" target="_blank" class="visit-btn">Go</a>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  // ---------- ফিল্টার ও সার্চের ইভেন্ট ----------
+  let currentCategory = 'all';
+  let currentSearch = '';
+
+  // ক্যাটাগরি ক্লিক
+  document.getElementById('categoryFilter').addEventListener('click', function(e) {
+    if (e.target.classList.contains('cat-btn')) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentCategory = e.target.dataset.cat;
+      renderApps(currentCategory, currentSearch);
+    }
+  });
+
+  // সার্চ টাইপ
+  document.getElementById('searchInput').addEventListener('input', function() {
+    currentSearch = this.value;
+    renderApps(currentCategory, currentSearch);
+  });
+
+  // ---------- প্রথমবার লোড ----------
+  renderApps('all', '');
+</script>
+
+</body>
+</html>
